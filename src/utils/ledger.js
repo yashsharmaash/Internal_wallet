@@ -47,7 +47,9 @@ export const lockAccounts = async (client, accountIds) => {
         const lockRes = await client.query(lockQuery, [id]);
 
         if (lockRes.rows.length === 0) {
-            throw new Error(`Account not found: ${id}`);
+            const err = new Error(`Account not found: ${id}`);
+            err.code = 'ACCOUNT_NOT_FOUND';
+            throw err;
         }
 
         const account = lockRes.rows[0];

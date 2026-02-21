@@ -4,10 +4,14 @@ import * as WalletController from '../controllers/wallet.controller.js';
 
 const router = express.Router();
 
-// Apply idempotency middleware to all POST routes in this router
+// Define GET endpoints (Idempotency middleware is skipped for GETs internally)
+router.get('/users', WalletController.getUsers);
+router.get('/balance/:userId', WalletController.getBalance);
+
+// Apply idempotency middleware to all subsequent routes (POSTs)
 router.use(checkIdempotency);
 
-// Define endpoints referencing controller actions
+// Define transactional POST endpoints
 router.post('/topup', WalletController.topup);
 router.post('/bonus', WalletController.bonus);
 router.post('/spend', WalletController.spend);

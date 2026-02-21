@@ -5,6 +5,9 @@ import { query } from '../config/db.js';
  * Queries the database to prevent duplicate transactions if a network drop causes a client retry.
  */
 export const checkIdempotency = async (req, res, next) => {
+    if (req.method === 'GET') {
+        return next();
+    }
     const idempotencyKey = req.header('Idempotency-Key');
 
     if (!idempotencyKey) {

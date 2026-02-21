@@ -73,6 +73,33 @@ components:
       description: Unique key to prevent duplicate processing of the same request.
 
 paths:
+  /wallet/users:
+    get:
+      summary: List demo user accounts
+      description: Returns a list of User Wallet IDs for testing purposes.
+      responses:
+        '200':
+          description: Users list
+
+  /wallet/balance/{userId}:
+    get:
+      summary: Check user balance
+      description: Retrieves the current balance for the given user ID.
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: User balance
+        '400':
+          description: Invalid UUID
+        '404':
+          description: Account Not Found
+
   /wallet/topup:
     post:
       summary: Top up user wallet
