@@ -4,6 +4,8 @@ info:
   description: API for double-entry ledger wallet operations including idempotency and concurrency controls.
   version: 1.0.0
 servers:
+  - url: /
+    description: Current Environment (Dynamic)
   - url: http://localhost:3000
     description: Local Dev Server
 
