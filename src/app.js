@@ -26,6 +26,11 @@ app.get('/health', (req, res) => {
 });
 
 
+// Root redirect to Swagger documentation
+app.get('/', (req, res) => {
+    res.redirect('/api-docs');
+});
+
 app.listen(PORT, () => {
     console.log(`Financial Engine API running on port ${PORT}`);
 });
