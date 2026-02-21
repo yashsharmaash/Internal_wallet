@@ -6,8 +6,7 @@ A robust, closed-loop wallet service engineered for high-traffic environments to
 
 ## 🚀 Live Demo (Render)
 The application has been fully containerized and deployed to the cloud. You can interact with the Swagger API Documentation directly:
-👉 **[Live Swagger UI](https://core-financial-engine.onrender.com)** *(Note: Replace with your actual Render URL if different)*
-
+👉 **[Live Swagger UI](https://core-financial-engine.onrender.com)** 
 ---
 
 ## 💻 How to Run Locally (Containerized Setup)
