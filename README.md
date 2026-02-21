@@ -4,9 +4,18 @@ A robust, closed-loop wallet service engineered for high-traffic environments to
 
 ---
 
-## 🚀 Live Demo (Render)
+## 🚀 Live Demo & API Testing (Render)
 The application has been fully containerized and deployed to the cloud. You can interact with the Swagger API Documentation directly:
 👉 **[Live Swagger UI](https://core-financial-engine.onrender.com)** 
+
+### How to Test the Endpoints
+To avoid hardcoding sensitive IDs, the database naturally generates random UUIDs for all users on startup. To test the API transactions properly:
+1. Open the **Swagger UI** link above.
+2. Expand the `GET /wallet/users` endpoint and click **Try it out** -> **Execute**.
+3. Copy one of the `id` strings from the response body (e.g., the ID for `User_Wallet_001`).
+4. Expand any POST transaction endpoint (e.g., `POST /wallet/topup`).
+5. Click **Try it out**.
+6. Paste the copied `id` into the `userId` field in the Request Body. Ensure you also provide a valid `amount` and type any random UUID string into the required `Idempotency-Key` header!
 ---
 
 ## 💻 How to Run Locally (Containerized Setup)
