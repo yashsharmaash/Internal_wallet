@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=${DATABASE_URL}
+      - NEON_DATABASE_URL=${NEON_DATABASE_URL}
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: sh -c "npm run seed && npm run dev"

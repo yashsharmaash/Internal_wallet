@@ -1,0 +1,162 @@
+openapi: 3.0.0
+info:
+  title: Core Financial Engine API
+  description: API for double-entry ledger wallet operations including idempotency and concurrency controls.
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000
+    description: Local Dev Server
+
+components:
+  schemas:
+    TopUpRequest:
+      type: object
+      required:
+        - userId
+        - amount
+      properties:
+        userId:
+          type: string
+          format: uuid
+          description: UUID of the User Wallet account
+          example: 8cf5b2c7-dbef-45fc-8051-6efc68a4ec4e
+        amount:
+          type: number
+          description: Amount of points to add to the wallet
+          example: 500
+
+    SpendRequest:
+      type: object
+      required:
+        - userId
+        - amount
+      properties:
+        userId:
+          type: string
+          format: uuid
+          description: UUID of the User Wallet account
+          example: 8cf5b2c7-dbef-45fc-8051-6efc68a4ec4e
+        amount:
+          type: number
+          description: Amount of points to spend from the wallet
+          example: 150
+
+    TransactionResult:
+      type: object
+      properties:
+        transactionId:
+          type: string
+          format: uuid
+        status:
+          type: string
+        amount:
+          type: number
+        remaining_balance:
+          type: number
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+
+  parameters:
+    IdempotencyKey:
+      in: header
+      name: Idempotency-Key
+      required: true
+      schema:
+        type: string
+        format: uuid
+      description: Unique key to prevent duplicate processing of the same request.
+
+paths:
+  /wallet/topup:
+    post:
+      summary: Top up user wallet
+      description: Debits Cash_Reserve and credits the user's wallet.
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TopUpRequest'
+      responses:
+        '201':
+          description: Top-up successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionResult'
+        '200':
+          description: Idempotent replay (cached success)
+        '400':
+          description: Bad request (missing fields or header)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Conflict (Idempotency-Key currently processing)
+
+  /wallet/bonus:
+    post:
+      summary: Grant bonus to user
+      description: Debits Marketing_Expense and credits the user's wallet.
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TopUpRequest'
+      responses:
+        '201':
+          description: Bonus granted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionResult'
+        '200':
+          description: Idempotent replay (cached success)
+        '400':
+          description: Bad request (missing fields or header)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Conflict (Idempotency-Key currently processing)
+
+  /wallet/spend:
+    post:
+      summary: Process user spend
+      description: Debits the user's wallet and credits Revenue. Includes strict balance checking.
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SpendRequest'
+      responses:
+        '201':
+          description: Spend successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionResult'
+        '200':
+          description: Idempotent replay (cached success)
+        '400':
+          description: Bad request. E.g., Insufficient Funds.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Conflict (Idempotency-Key currently processing)
