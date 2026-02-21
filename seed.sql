@@ -64,7 +64,9 @@ INSERT INTO accounts (name, type, asset_id)
 VALUES ('Revenue', 'REVENUE', 'POINTS')
 ON CONFLICT (name) DO NOTHING;
 
--- 3. Demo User Wallet
+-- 3. Demo User Wallets (Requirement: At least two users)
 INSERT INTO accounts (name, type, asset_id)
-VALUES ('User_Wallet_001', 'LIABILITY', 'POINTS')
+VALUES 
+    ('User_Wallet_001', 'LIABILITY', 'POINTS'),
+    ('User_Wallet_002', 'LIABILITY', 'POINTS')
 ON CONFLICT (name) DO NOTHING;

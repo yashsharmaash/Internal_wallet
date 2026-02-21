@@ -28,7 +28,7 @@ The orchestrator in `docker-compose.yml` (and `render.yaml`) automatically runs 
 
 ---
 
-## 🛠️ Choice of Technology
+##  Choice of Technology
 
 *   **Runtime:** `Node.js` (ES Modules) via `Express.js`. Selected for its lightweight, non-blocking asynchronous event loop, which handles high I/O throughput typical in financial systems mapping numerous concurrent requests.
 *   **Database:** `PostgreSQL`. Selected for its robust ACID compliance and row-level locking capabilities (`SELECT ... FOR UPDATE`), which are absolute necessities in preventing race conditions and guaranteeing data integrity inside a ledger.
@@ -36,7 +36,7 @@ The orchestrator in `docker-compose.yml` (and `render.yaml`) automatically runs 
 
 ---
 
-## 🛡️ Strategy: Concurrency & Race Conditions
+##  Concurrency & Race Conditions
 
 In a high-traffic environment, you cannot verify a balance and subtract from it in two disparate queries without another concurrent request sneaking in and draining the funds in between. 
 
@@ -54,7 +54,7 @@ Network requests fail, and clients automatically retry. To prevent double-spendi
 
 ---
 
-## 🎯 Requirements Fulfillment Checklist
+
 
 ✅ **Functional Logic:**
    - [x] Wallet Top-up (Purchase vs `Cash_Reserve`)
@@ -64,7 +64,7 @@ Network requests fail, and clients automatically retry. To prevent double-spendi
 ✅ **Data Seeding & Setup:**
    - [x] `seed.sql` populates Asset Types, System Accounts, and User Accounts correctly.
 
-🌟 **Brownie Points Accomplished (4/4):**
+
    - [x] **Deadlock Avoidance:** Guaranteed via deterministic alphanumeric lock ordering constraints.
    - [x] **Ledger-Based Architecture:** Executed via Parent `transactions` and atomistic `postings` enforcing Double-Entry constraint validation.
    - [x] **Containerization:** Provided completely via orchestrating `Dockerfile` and `docker-compose.yml`.
