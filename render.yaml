@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: core-financial-engine
+    env: node
+    region: oregon # Or any available region like frankfurt, ohio, singapore
+    plan: free
+    buildCommand: npm install
+    startCommand: npm run seed && npm start
+    envVars:
+      - key: PORT
+        value: 3000
+      - key: DATABASE_URL
+        sync: false # Requires manual entry in the Render Dashboard once deployed
+      - key: NEON_DATABASE_URL
+        sync: false # Or provide just one database URL key based on config fallback
