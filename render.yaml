@@ -1,11 +1,9 @@
 services:
   - type: web
     name: core-financial-engine
-    env: node
+    env: docker
     region: oregon # Or any available region like frankfurt, ohio, singapore
     plan: free
-    buildCommand: npm install
-    startCommand: npm run seed && npm start
     envVars:
       - key: PORT
         value: 3000
